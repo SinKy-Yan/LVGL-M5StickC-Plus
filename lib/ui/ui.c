@@ -8,8 +8,8 @@
 
 ///////////////////// VARIABLES ////////////////////
 lv_obj_t * ui_Screen1;
-lv_obj_t * ui_Button1;
-lv_obj_t * ui_Button2;
+lv_obj_t * ui_Switch1;
+lv_obj_t * ui_Label1;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -20,7 +20,16 @@ lv_obj_t * ui_Button2;
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
+
 ///////////////////// FUNCTIONS ////////////////////
+static void ui_event_Switch1(lv_event_t * e)
+{
+    lv_event_code_t event = lv_event_get_code(e);
+    lv_obj_t * ta = lv_event_get_target(e);
+    if(event == LV_EVENT_VALUE_CHANGED) {
+        light_CB(e);
+    }
+}
 
 ///////////////////// SCREENS ////////////////////
 void ui_Screen1_screen_init(void)
@@ -32,35 +41,40 @@ void ui_Screen1_screen_init(void)
 
     lv_obj_clear_flag(ui_Screen1, LV_OBJ_FLAG_SCROLLABLE);
 
-    // ui_Button1
+    lv_obj_set_style_bg_color(ui_Screen1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Screen1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Button1 = lv_btn_create(ui_Screen1);
+    // ui_Switch1
 
-    lv_obj_set_width(ui_Button1, 100);
-    lv_obj_set_height(ui_Button1, 50);
+    ui_Switch1 = lv_switch_create(ui_Screen1);
 
-    lv_obj_set_x(ui_Button1, 0);
-    lv_obj_set_y(ui_Button1, -50);
+    lv_obj_set_width(ui_Switch1, 75);
+    lv_obj_set_height(ui_Switch1, 40);
 
-    lv_obj_set_align(ui_Button1, LV_ALIGN_CENTER);
+    lv_obj_set_x(ui_Switch1, 0);
+    lv_obj_set_y(ui_Switch1, 10);
 
-    lv_obj_add_flag(ui_Button1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
-    lv_obj_clear_flag(ui_Button1, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_align(ui_Switch1, LV_ALIGN_CENTER);
 
-    // ui_Button2
+    lv_obj_add_event_cb(ui_Switch1, ui_event_Switch1, LV_EVENT_ALL, NULL);
 
-    ui_Button2 = lv_btn_create(ui_Screen1);
+    // ui_Label1
 
-    lv_obj_set_width(ui_Button2, 100);
-    lv_obj_set_height(ui_Button2, 50);
+    ui_Label1 = lv_label_create(ui_Screen1);
 
-    lv_obj_set_x(ui_Button2, 0);
-    lv_obj_set_y(ui_Button2, 50);
+    lv_obj_set_width(ui_Label1, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_Label1, LV_SIZE_CONTENT);
 
-    lv_obj_set_align(ui_Button2, LV_ALIGN_CENTER);
+    lv_obj_set_x(ui_Label1, 0);
+    lv_obj_set_y(ui_Label1, -30);
 
-    lv_obj_add_flag(ui_Button2, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
-    lv_obj_clear_flag(ui_Button2, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_align(ui_Label1, LV_ALIGN_CENTER);
+
+    lv_label_set_text(ui_Label1, "LED");
+
+    lv_obj_set_style_text_color(ui_Label1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Label1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
 }
 
 void ui_init(void)
@@ -71,7 +85,5 @@ void ui_init(void)
     lv_disp_set_theme(dispp, theme);
     ui_Screen1_screen_init();
     lv_disp_load_scr(ui_Screen1);
-
-    
 }
 

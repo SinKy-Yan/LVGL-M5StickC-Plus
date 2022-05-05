@@ -17,9 +17,10 @@ extern "C" {
 #endif
 
 extern lv_obj_t * ui_Screen1;
-extern lv_obj_t * ui_Button1;
-extern lv_obj_t * ui_Button2;
+extern lv_obj_t * ui_Switch1;
+extern lv_obj_t * ui_Label1;
 
+void light_CB(lv_event_t * e);
 
 
 
